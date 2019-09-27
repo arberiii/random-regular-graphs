@@ -6,7 +6,8 @@ import (
 	"time"
 )
 
-const maxPairIteration = 10000
+const maxPairIteration = 100000
+const maxGraphIteration = 100
 
 var u []int
 var groups [][]int
@@ -104,7 +105,6 @@ func pairNewPoints() {
 	if len(u) > 0 {
 		x, y := twoRandomPoints()
 		if suitable(x, y) {
-			fmt.Println(x, y)
 			pairs = append(pairs, pair{x: indexInGroups(x), y: indexInGroups(y)})
 			deleteIndex(y)
 			deleteIndex(x)
@@ -117,17 +117,24 @@ func deleteIndex(x int) {
 	u = append(u[:i], u[i+1:]...)
 }
 
-func iteration() {
+func iteration() graph {
 	for i := 0; i < maxPairIteration; i++ {
 		pairNewPoints()
+	}
+	return buildGraph()
+}
+
+func Algorithm(n, d int) {
+	newGroups(n, d)
+	for i := 0; i < maxGraphIteration; i++ {
+		g := iteration()
+		if g.isDRegular(d) {
+			fmt.Println(g)
+			break
+		}
 	}
 }
 
 func ForTest() {
-	newGroups(5, 2)
-
-	iteration()
-	fmt.Println(u)
-	fmt.Println(groups)
-	fmt.Println(pairs)
+	Algorithm(10, 5)
 }
