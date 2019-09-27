@@ -24,3 +24,4 @@ func main() {
 > go run main.go
 map[0:[3 2] 1:[3 4] 2:[0 4] 3:[0 1] 4:[1 2]]
 ```
+<img src="https://github.com/arberiii/random-regular-graphs/blob/master/star.png" class="center" width="200" height="200">
