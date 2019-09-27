@@ -6,6 +6,8 @@ import (
 	"time"
 )
 
+const maxPairIteration = 10000
+
 var u []int
 var groups [][]int
 
@@ -27,7 +29,11 @@ func newU(n, d int) {
 func newGroups(n, d int) {
 	newU(n, d)
 	for i := 0; i < n; i++ {
-		groups = append(groups, u[i*d:i*d+d])
+		var group []int
+		for _, v := range u[i*d : i*d+d] {
+			group = append(group, v)
+		}
+		groups = append(groups, group)
 	}
 }
 
@@ -60,6 +66,15 @@ func indexInGroups(x int) int {
 	return -1
 }
 
+func indexInU(x int) int {
+	for i := range u {
+		if u[i] == x {
+			return i
+		}
+	}
+	return -1
+}
+
 func pairExist(x, y int) bool {
 	for i := range pairs {
 		if pairs[i].x == x && pairs[i].y == y {
@@ -77,15 +92,42 @@ func twoRandomPoints() (int, int) {
 		y := rand.Intn(len(u))
 		if x != y {
 			if x < y {
-				return x, y
+				return u[x], u[y]
 			} else {
-				return y, x
+				return u[y], u[x]
 			}
 		}
 	}
 }
 
+func pairNewPoints() {
+	if len(u) > 0 {
+		x, y := twoRandomPoints()
+		if suitable(x, y) {
+			fmt.Println(x, y)
+			pairs = append(pairs, pair{x: indexInGroups(x), y: indexInGroups(y)})
+			deleteIndex(y)
+			deleteIndex(x)
+		}
+	}
+}
+
+func deleteIndex(x int) {
+	i := indexInU(x)
+	u = append(u[:i], u[i+1:]...)
+}
+
+func iteration() {
+	for i := 0; i < maxPairIteration; i++ {
+		pairNewPoints()
+	}
+}
+
 func ForTest() {
-	newGroups(4, 2)
-	fmt.Println(twoRandomPoints())
+	newGroups(5, 2)
+
+	iteration()
+	fmt.Println(u)
+	fmt.Println(groups)
+	fmt.Println(pairs)
 }
