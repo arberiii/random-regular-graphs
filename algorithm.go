@@ -1,12 +1,13 @@
 package rgraph
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
 )
 
-var U []int
-var Groups [][]int
+var u []int
+var groups [][]int
 
 type pair struct {
 	x int
@@ -16,17 +17,17 @@ type pair struct {
 var pairs []pair
 
 // should be ordered
-func NewU(n, d int) {
+func newU(n, d int) {
 	for i := 1; i < n*d+1; i++ {
-		U = append(U, i)
+		u = append(u, i)
 	}
 }
 
 // should be ordered
-func NewGroups(n, d int) {
-	NewU(n, d)
+func newGroups(n, d int) {
+	newU(n, d)
 	for i := 0; i < n; i++ {
-		Groups = append(Groups, U[i*d:i*d+d])
+		groups = append(groups, u[i*d:i*d+d])
 	}
 }
 
@@ -49,9 +50,9 @@ func suitable(x, y int) bool {
 }
 
 func indexInGroups(x int) int {
-	for i := range Groups {
-		for j := range Groups[i] {
-			if x == Groups[i][j] {
+	for i := range groups {
+		for j := range groups[i] {
+			if x == groups[i][j] {
 				return i
 			}
 		}
@@ -69,11 +70,11 @@ func pairExist(x, y int) bool {
 }
 
 // order tuple
-func TwoRandomPoints() (int, int) {
+func twoRandomPoints() (int, int) {
 	rand.Seed(time.Now().Unix())
-	x := rand.Intn(len(U))
+	x := rand.Intn(len(u))
 	for {
-		y := rand.Intn(len(U))
+		y := rand.Intn(len(u))
 		if x != y {
 			if x < y {
 				return x, y
@@ -82,4 +83,9 @@ func TwoRandomPoints() (int, int) {
 			}
 		}
 	}
+}
+
+func ForTest() {
+	newGroups(4, 2)
+	fmt.Println(twoRandomPoints())
 }
