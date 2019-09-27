@@ -1,7 +1,6 @@
 package rgraph
 
 import (
-	"fmt"
 	"math/rand"
 	"time"
 )
@@ -18,6 +17,18 @@ type pair struct {
 }
 
 var pairs []pair
+
+// RandomRegularGraph is a practical algorithm for generating random regular graphs
+func RandomRegularGraph(n, d int) graph {
+	newGroups(n, d)
+	for i := 0; i < maxGraphIteration; i++ {
+		g := iteration()
+		if g.isDRegular(d) {
+			return g
+		}
+	}
+	return nil
+}
 
 // should be ordered
 func newU(n, d int) {
@@ -122,19 +133,4 @@ func iteration() graph {
 		pairNewPoints()
 	}
 	return buildGraph()
-}
-
-func Algorithm(n, d int) {
-	newGroups(n, d)
-	for i := 0; i < maxGraphIteration; i++ {
-		g := iteration()
-		if g.isDRegular(d) {
-			fmt.Println(g)
-			break
-		}
-	}
-}
-
-func ForTest() {
-	Algorithm(10, 5)
 }
