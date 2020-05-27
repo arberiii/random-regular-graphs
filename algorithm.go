@@ -18,7 +18,7 @@ type pair struct {
 
 var pairs []pair
 
-// RandomRegularGraph is a practical algorithm for generating random regular graphs
+// RandomRegularGraph is a practical algorithm for generating random regular graphs with n vertices of degree d.
 func RandomRegularGraph(n, d int) graph {
 	newGroups(n, d)
 	for i := 0; i < maxGraphIteration; i++ {
