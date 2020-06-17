@@ -5,8 +5,8 @@ import (
 	"time"
 )
 
-const maxPairIteration = 100000
-const maxGraphIteration = 100
+const MaxPairIteration = 100000
+const MaxGraphIteration = 100
 
 var u []int
 var groups [][]int
@@ -21,7 +21,7 @@ var pairs []pair
 // RandomRegularGraph is a practical algorithm for generating random regular graphs with n vertices of degree d.
 func RandomRegularGraph(n, d int) graph {
 	newGroups(n, d)
-	for i := 0; i < maxGraphIteration; i++ {
+	for i := 0; i < MaxGraphIteration; i++ {
 		g := iteration()
 		if g.isDRegular(d) {
 			return g
@@ -129,7 +129,7 @@ func deleteIndex(x int) {
 }
 
 func iteration() graph {
-	for i := 0; i < maxPairIteration; i++ {
+	for i := 0; i < MaxPairIteration; i++ {
 		pairNewPoints()
 	}
 	return buildGraph()
